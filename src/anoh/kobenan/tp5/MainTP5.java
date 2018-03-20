@@ -20,7 +20,7 @@ public class MainTP5 extends Application {
     public void start(Stage primaryStage) {
 
         try {
-            primaryStage.setTitle("TP5 Anoh-Kobenan");
+            primaryStage.setTitle("TP5 - Mots Croisés [Anoh & Kobenan]");
             FXMLLoader loader = new FXMLLoader();
             loader.setLocation(MainTP5.class.getResource("view/Principal.fxml"));
             BorderPane root = (BorderPane) loader.load();
