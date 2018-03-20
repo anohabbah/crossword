@@ -1,6 +1,5 @@
 package anoh.kobenan.tp5.view;
 
-import anoh.kobenan.tp5.MainTP5;
 import anoh.kobenan.tp5.model.IterateurMots;
 import anoh.kobenan.tp5.model.MotsCroisesTP5;
 import anoh.kobenan.tp5.model.db.ChargerGrille;
@@ -23,7 +22,6 @@ import javafx.util.Duration;
  */
 public class ControllerTP5 {
 
-    private MainTP5 app;
     private MotsCroisesTP5 mc;
     private ControlsArray<TextField> gridSnap;
     private Direction curDirection = Direction.HORIZONTAL;
@@ -68,6 +66,10 @@ public class ControllerTP5 {
         this.settings();
     }
 
+    /**
+     * Configuration de la grille des mots croisés.
+     * Ajoute les bindings et des écoutes d'évènement sur chaque text field de la grille.
+     */
     private void settings() {
         // Initialisation de gridSnap
         this.gridSnap = new ControlsArray<>(this.mc.getHauteur(), this.mc.getLargeur());
@@ -80,20 +82,24 @@ public class ControllerTP5 {
 
                 tf.textProperty().bindBidirectional(this.mc.propositionProperty(lig, col));
                 tf.textProperty().addListener((observable, oldValue, newValue) -> {
-                    ScaleTransition transition = new ScaleTransition(Duration.millis(500), tf);
-                    // From 0%
-                    transition.setFromX(0.0);
-                    transition.setFromY(0.0);
-                    // To 100%
-                    transition.setToX(1.0);
-                    transition.setToY(1.0);
-                    transition.setAutoReverse(true);
-                    transition.play();
+                    if (!newValue.isEmpty()) {
+                        this.currentField.getStyleClass().remove("has-error");
+                        this.currentField.getStyleClass().remove("is-success");
+                        ScaleTransition transition = new ScaleTransition(Duration.millis(500), tf);
+                        // From 0%
+                        transition.setFromX(0.0);
+                        transition.setFromY(0.0);
+                        // To 100%
+                        transition.setToX(1.0);
+                        transition.setToY(1.0);
+                        transition.setAutoReverse(true);
+                        transition.play();
+                    }
                 });
 
                 tf.lengthProperty().addListener((observable, oldValue, newValue) -> {
                     if (newValue.intValue() > oldValue.intValue() && tf.getText().length() >= 1)
-                        tf.setText(tf.getText().substring(0, 1));
+                        tf.setText(tf.getText().trim().substring(0, 1));
 
                 });
 
@@ -110,7 +116,7 @@ public class ControllerTP5 {
                 tf.focusedProperty().addListener((observable, oldValue, newValue) -> {
                     if (newValue) {
                         currentField = tf;
-                        tf.getStyleClass().add("is-current");
+                        currentField.getStyleClass().add("is-current");
                     }
 
                     if (oldValue)
@@ -122,13 +128,17 @@ public class ControllerTP5 {
             }
         }
 
-        this.currentField = this.gridSnap.getValue(1, 1);
-        currentField.requestFocus();
+        TextField firstField = (TextField) this.monGridPane.getChildren().get(0);
+        firstField.requestFocus();
     }
 
     private void keyPressedCase(KeyEvent e) {
         KeyCode code = e.getCode();
         TextField tf = (TextField) e.getSource();
+
+        if (code.isLetterKey()) {
+            this.moveTo(true, tf);
+        }
 
         switch (code) {
             case UP:
@@ -174,43 +184,8 @@ public class ControllerTP5 {
                 break;
 
             case BACK_SPACE:
-                this.currentField.getStyleClass().remove("has-error");
-                this.currentField.getStyleClass().remove("is-success");
-                this.currentField.setText("");
-                this.moveTo(false, tf);
-                break;
-
-            case A:
-            case B:
-            case C:
-            case D:
-            case E:
-            case F:
-            case G:
-            case H:
-            case I:
-            case J:
-            case K:
-            case L:
-            case M:
-            case N:
-            case O:
-            case P:
-            case Q:
-            case R:
-            case S:
-            case T:
-            case U:
-            case V:
-            case W:
-            case X:
-            case Y:
-            case Z:
-                this.currentField.getStyleClass().remove("has-error");
-                this.currentField.getStyleClass().remove("is-success");
-                if (tf.getText().length() <= 1) {
-                    this.moveTo(true, this.currentField);
-                }
+                currentField.setText("");
+                this.moveTo(false, currentField);
                 break;
 
             default: // Désactiver le comportement par defaut de toutes les autres touches
@@ -222,15 +197,15 @@ public class ControllerTP5 {
         int col = ((int) src.getProperties().get("gridpane-column")) + 1;
         switch (this.curDirection) {
             case HORIZONTAL:
-                this.currentField = this.gridSnap.getNextNotNullValue(lig, next ? ++col : --col, true, next);
+                src = this.gridSnap.getNextNotNullValue(lig, next ? ++col : --col, true, next);
                 break;
 
             case VERTICAL:
-                this.currentField = this.gridSnap.getNextNotNullValue(next ? ++lig : --lig, col, false, next);
+                src = this.gridSnap.getNextNotNullValue(next ? ++lig : --lig, col, false, next);
                 break;
         }
 
-        this.currentField.requestFocus();
+        src.requestFocus();
     }
 
     @FXML
@@ -239,13 +214,11 @@ public class ControllerTP5 {
             TextField cas = (TextField) e.getSource();
             int lig = ((int) cas.getProperties().get("gridpane-row")) + 1;
             int col = ((int) cas.getProperties().get("gridpane-column")) + 1;
+            cas.getStyleClass().remove("has-error");
+            cas.getStyleClass().remove("is-success");
             this.mc.reveler(lig, col);
             moveTo(true, cas);
         }
-    }
-
-    public void setMainApp(MainTP5 app) {
-        this.app = app;
     }
 
     public void setMotsCroises(MotsCroisesTP5 mc) {

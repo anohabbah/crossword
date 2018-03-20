@@ -1,6 +1,5 @@
 package anoh.kobenan.tp5.view;
 
-import anoh.kobenan.tp5.MainTP5;
 import anoh.kobenan.tp5.model.MotsCroisesTP5;
 import anoh.kobenan.tp5.model.db.ChargerGrille;
 import javafx.fxml.FXML;
@@ -10,10 +9,8 @@ import javafx.scene.control.MenuItem;
 import java.util.Map;
 
 public class PrincipalController {
-
-    private MainTP5 app;
-    ChargerGrille grille;
-    MotsCroisesTP5 mc;
+    private ChargerGrille grilleLoader;
+    private ControllerTP5 grilleController;
 
     @FXML
     public MenuItem exit;
@@ -26,8 +23,8 @@ public class PrincipalController {
 
     @FXML
     public void initialize() {
-        this.grille = new ChargerGrille();
-        Map<Integer, String> jeux = this.grille.ListeJeu();
+        this.grilleLoader = new ChargerGrille();
+        Map<Integer, String> jeux = this.grilleLoader.ListeJeu();
 
         for (Integer cle : jeux.keySet()) {
             String nomJeu = jeux.get(cle);
@@ -41,7 +38,7 @@ public class PrincipalController {
 
     @FXML
     public void exit() {
-        System.exit(1);
+        System.exit(0);
     }
 
     @FXML
@@ -52,18 +49,15 @@ public class PrincipalController {
 
     private void genererGrille(int numGrille) {
         try {
-            this.mc = this.grille.extraireGrille(numGrille);
+            grilleController.setMotsCroises(this.grilleLoader.extraireGrille(numGrille));
+            grilleController.setUp();
         } catch (Exception e) {
             e.printStackTrace();
         }
 
-        ControllerTP5 controller = this.app.getGrilleController();
-        controller.setMotsCroises(this.mc);
-        controller.setUp();
-
     }
 
-    public void setMainApp(MainTP5 app) {
-        this.app = app;
+    public void setGrilleController(ControllerTP5 grilleController) {
+        this.grilleController = grilleController;
     }
 }

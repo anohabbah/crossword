@@ -1,9 +1,7 @@
 package anoh.kobenan.tp5;
 
-import anoh.kobenan.tp5.view.ControllerTP5;
 import anoh.kobenan.tp5.view.PrincipalController;
 import javafx.application.Application;
-import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.input.KeyCode;
@@ -14,7 +12,6 @@ import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 
 public class MainTP5 extends Application {
-    ControllerTP5 grilleController;
 
     @Override
     public void start(Stage primaryStage) {
@@ -23,16 +20,14 @@ public class MainTP5 extends Application {
             primaryStage.setTitle("TP5 - Mots Croisés [Anoh & Kobenan]");
             FXMLLoader loader = new FXMLLoader();
             loader.setLocation(MainTP5.class.getResource("view/Principal.fxml"));
-            BorderPane root = (BorderPane) loader.load();
+            BorderPane root = loader.load();
             PrincipalController rootController = loader.getController();
-            rootController.setMainApp(this);
 
             FXMLLoader l = new FXMLLoader();
             l.setLocation(MainTP5.class.getResource("view/VueTP5.fxml"));
-            BorderPane grille = (BorderPane) l.load();
+            BorderPane grille = l.load();
 
-            grilleController = l.getController();
-            grilleController.setMainApp(this);
+            rootController.setGrilleController(l.getController());
 
             root.setCenter(grille);
 
@@ -54,9 +49,5 @@ public class MainTP5 extends Application {
 
     public static void main(String[] args) {
         launch(args);
-    }
-
-    public ControllerTP5 getGrilleController() {
-        return this.grilleController;
     }
 }
