@@ -22,6 +22,8 @@ import javafx.util.Duration;
  */
 public class ControllerTP5 {
 
+    private enum Direction {HORIZONTAL, VERTICAL}
+
     private MotsCroisesTP5 mc;
     private ControlsArray<TextField> gridSnap;
     private Direction curDirection = Direction.HORIZONTAL;
@@ -188,7 +190,6 @@ public class ControllerTP5 {
                 this.moveTo(false, currentField);
                 break;
 
-            default: // Désactiver le comportement par defaut de toutes les autres touches
         }
     }
 
@@ -224,6 +225,4 @@ public class ControllerTP5 {
     public void setMotsCroises(MotsCroisesTP5 mc) {
         this.mc = mc;
     }
-
-    private enum Direction {HORIZONTAL, VERTICAL}
 }
