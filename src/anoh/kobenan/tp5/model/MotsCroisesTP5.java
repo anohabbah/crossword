@@ -17,7 +17,7 @@ public class MotsCroisesTP5 implements SpecifMotsCroises {
         for (int lig = 1; lig <= getHauteur(); lig++) {
             for (int col = 1; col <= getLargeur(); col++) {
                 this.setCaseNoire(lig, col, true);
-                this.proposition.setCellule(lig, col, new SimpleStringProperty(" "));
+                this.proposition.setCellule(lig, col, new SimpleStringProperty(""));
             }
         }
     }

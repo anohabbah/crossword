@@ -84,24 +84,20 @@ public class ControllerTP5 {
 
                 tf.textProperty().bindBidirectional(this.mc.propositionProperty(lig, col));
                 tf.textProperty().addListener((observable, oldValue, newValue) -> {
-                    if (!newValue.isEmpty()) {
-                        this.currentField.getStyleClass().remove("has-error");
-                        this.currentField.getStyleClass().remove("is-success");
-                        ScaleTransition transition = new ScaleTransition(Duration.millis(500), tf);
-                        // From 0%
-                        transition.setFromX(0.0);
-                        transition.setFromY(0.0);
-                        // To 100%
-                        transition.setToX(1.0);
-                        transition.setToY(1.0);
-                        transition.setAutoReverse(true);
-                        transition.play();
-                    }
+                    this.currentField.getStyleClass().remove("has-error");
+                    this.currentField.getStyleClass().remove("is-success");
+
+//                    newValue = newValue.toUpperCase();
+                    if (newValue.matches("[A-Z]")) {
+                        animate();
+                        this.moveTo(true, tf);
+                    } else
+                        this.currentField.setText("");
                 });
 
                 tf.lengthProperty().addListener((observable, oldValue, newValue) -> {
                     if (newValue.intValue() > oldValue.intValue() && tf.getText().length() >= 1)
-                        tf.setText(tf.getText().trim().substring(0, 1));
+                        tf.setText(tf.getText().trim().substring(0, 1).toUpperCase());
 
                 });
 
@@ -134,13 +130,21 @@ public class ControllerTP5 {
         firstField.requestFocus();
     }
 
+    private void animate() {
+        ScaleTransition transition = new ScaleTransition(Duration.millis(500), this.currentField);
+        // From 0%
+        transition.setFromX(0.0);
+        transition.setFromY(0.0);
+        // To 100%
+        transition.setToX(1.0);
+        transition.setToY(1.0);
+        transition.setAutoReverse(true);
+        transition.play();
+    }
+
     private void keyPressedCase(KeyEvent e) {
         KeyCode code = e.getCode();
         TextField tf = (TextField) e.getSource();
-
-        if (code.isLetterKey()) {
-            this.moveTo(true, tf);
-        }
 
         switch (code) {
             case UP:

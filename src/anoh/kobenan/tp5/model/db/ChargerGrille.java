@@ -51,7 +51,7 @@ public class ChargerGrille {
                 int col = setMots.getInt("colonne");
                 int lig = setMots.getInt("ligne");
 
-                String solution = setMots.getString("solution");
+                String solution = setMots.getString("solution").toUpperCase();
                 boolean horiz = setMots.getBoolean("horizontal");
                 mc.setDefinition(lig, col, horiz, setMots.getString("definition"));
                 if (horiz) {

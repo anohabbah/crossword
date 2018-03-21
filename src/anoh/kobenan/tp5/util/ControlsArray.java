@@ -25,32 +25,32 @@ public class ControlsArray<E> {
     /**
      * Trouve la prochaine valeur non null.
      *
-     * @param fromY ligne à partir de laquelle commence la recherche
-     * @param fromX colonne à partir de laquelle commence la recherche
+     * @param lig ligne à partir de laquelle commence la recherche
+     * @param col colonne à partir de laquelle commence la recherche
      * @param horizontal si {@code True} la recherche s'effectue suivant l'horizontale, sinon suivant la verticale
      * @param next si {@code False} la recherche s'effectue dans la direction opposée
      * @return retourne la prochaine valeur non null suivant la derection et le sens indiqués, null si toutes les
      * valeurs suivantes sont nulls
      */
-    public E getNextNotNullValue(int fromY, int fromX, boolean horizontal, boolean next) {
-        assert isCorrectIndices(fromY, fromX);
+    public E getNextNotNullValue(int lig, int col, boolean horizontal, boolean next) {
+        assert isCorrectIndices(lig, col);
 
-        E value = this.getValue(fromY, fromX);
+        E value = this.getValue(lig, col);
         if (horizontal) {
-            while (fromX <= getColumn() && value == null) {
+            while (col <= getColumn() && value == null) {
                 if (next)
-                    ++fromX;
+                    ++col;
                 else
-                    --fromX;
-                value = this.getValue(fromY, fromX);
+                    --col;
+                value = this.getValue(lig, col);
             }
         } else {
-            while (fromY <= getRow() && value == null) {
+            while (lig <= getRow() && value == null) {
                 if (next)
-                    ++fromY;
+                    ++lig;
                 else
-                    --fromY;
-                value = this.getValue(fromY, fromX);
+                    --lig;
+                value = this.getValue(lig, col);
             }
         }
 
@@ -58,7 +58,7 @@ public class ControlsArray<E> {
     }
 
     private boolean isCorrectIndices(int row, int column) {
-        return (1 <= row && row <= this.getRow()) && (1 <= column && column <= this.getColumn());
+        return 1 <= row && row <= getRow() && 1 <= column && column <= getColumn();
     }
 
     public int getRow() {
