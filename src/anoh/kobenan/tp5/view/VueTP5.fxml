@@ -16,10 +16,6 @@
                 <TextField prefHeight="40.0" prefWidth="40.0" GridPane.columnIndex="0" GridPane.rowIndex="0"/>
                 <TextField prefHeight="40.0" prefWidth="40.0" GridPane.columnIndex="0" GridPane.rowIndex="1"/>
                 <TextField prefHeight="40.0" prefWidth="40.0" GridPane.columnIndex="1" GridPane.rowIndex="0"/>
-                <!--  case laissée noire par omission du TextField :
-                        <TextField prefHeight="40.0" prefWidth="40.0"
-                                GridPane.columnIndex="1" GridPane.rowIndex="1" />
-                -->
                 <TextField prefHeight="40.0" prefWidth="40.0" GridPane.columnIndex="2" GridPane.rowIndex="0"/>
                 <TextField prefHeight="40.0" prefWidth="40.0" GridPane.columnIndex="2" GridPane.rowIndex="1"/>
             </children>

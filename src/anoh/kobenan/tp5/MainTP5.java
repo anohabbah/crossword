@@ -18,6 +18,7 @@ public class MainTP5 extends Application {
 
         try {
             primaryStage.setTitle("TP5 - Mots Croisés [Anoh & Kobenan]");
+            primaryStage.setResizable(false);
             FXMLLoader loader = new FXMLLoader();
             loader.setLocation(MainTP5.class.getResource("view/Principal.fxml"));
             BorderPane root = loader.load();
@@ -31,7 +32,7 @@ public class MainTP5 extends Application {
 
             root.setCenter(grille);
 
-            Scene scene = new Scene(root);
+            Scene scene = new Scene(root, 550, 650);
 
             // Ctrl + W, ferme la fenetre
             final KeyCombination comb = new KeyCodeCombination(KeyCode.W, KeyCombination.CONTROL_DOWN);
